@@ -18,9 +18,10 @@ public class ConsumerApplication {
 
     
     @Bean
-    IntegrationFlow integrationFlow(ConsumerChannels c) {
+    IntegrationFlow integrationFlow(Logger logger,ConsumerChannels c) {
         return IntegrationFlows.from(c.producer())
                 .handle(String.class, (payload, header) -> {
+                    logger.info("New Message "+ payload);
                     return null;
                 })
                 .get(); 
