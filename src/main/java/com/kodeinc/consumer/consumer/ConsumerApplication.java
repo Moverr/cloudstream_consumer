@@ -1,6 +1,7 @@
 package com.kodeinc.consumer.consumer;
 
 import java.util.logging.Logger;
+import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -22,8 +23,11 @@ public class ConsumerApplication {
                 .handle(String.class, (payload, header) -> {
                     return null;
                 })
-                .get();
-
+                .get(); 
+    }
+    
+    Logger logger(InjectionPoint ip){
+        return Logger.getLogger(ip.getDeclaredType().getName());
     }
     
     
