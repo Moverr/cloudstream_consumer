@@ -29,8 +29,7 @@ public class ConsumerApplication {
     Logger logger(InjectionPoint ip){
         return Logger.getLogger(ip.getDeclaredType().getName());
     }
-    
-    
+     
 
     public static void main(String[] args) {
         SpringApplication.run(ConsumerApplication.class, args);
