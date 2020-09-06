@@ -17,32 +17,29 @@ import org.springframework.messaging.SubscribableChannel;
 @SpringBootApplication
 @EnableBinding(ConsumerChannels.class)
 public class ConsumerApplication {
-  
-    
-        @StreamListener()
-	public void handleMessage(String message){
-		System.out.println("Subscriber Received Message is: " + message);
-	}
-        
-        
-    @Bean
-    IntegrationFlow integrationFlow(Logger logger, ConsumerChannels c) {
-        return IntegrationFlows.from(c.producer())
-                .handle(String.class, (payload, header) -> {
-                    logger.info("New Message "+ payload);
-                    return null;
-                })
-                .get(); 
+
+    @StreamListener(target = ConsumerChannels.GREETING)
+    public void handleMessage(String message) {
+        System.out.println("Subscriber Received Message is: " + message);
     }
-    
+
+    /*
+     @Bean
+     IntegrationFlow integrationFlow(Logger logger, ConsumerChannels c) {
+     return IntegrationFlows.from(c.producer())
+     .handle(String.class, (payload, header) -> {
+     logger.info("New Message "+ payload);
+     return null;
+     })
+     .get(); 
+     }
+     */
     @Bean
-    @Scope("prototype")       
-    Logger logger(InjectionPoint ip){
+    @Scope("prototype")
+    Logger logger(InjectionPoint ip) {
         return Logger.getLogger(ip.getDeclaredType().getName());
     }
-     
 
-    
     public static void main(String[] args) {
         SpringApplication.run(ConsumerApplication.class, args);
     }
@@ -51,6 +48,8 @@ public class ConsumerApplication {
 
 interface ConsumerChannels {
 
-    @Input
+    String GREETING = "greetings";
+
+    @Input(GREETING)
     SubscribableChannel producer();
 }
